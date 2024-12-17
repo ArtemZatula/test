@@ -8,6 +8,8 @@ export interface Book {
   description: string;
 }
 
+export type BookFormGroupValue = Omit<Book, 'id'>
+
 export interface BookFormGroup {
   title: FormControl<string>;
   author: FormControl<string>;

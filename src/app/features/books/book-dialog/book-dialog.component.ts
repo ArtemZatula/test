@@ -4,7 +4,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
 import { MatFormField, MatLabel } from '@angular/material/form-field'
 import { MatInputModule } from '@angular/material/input';
 
-import { Book, BookFormGroup } from '../book.model'
+import { Book, BookFormGroup, BookFormGroupValue } from '../book.model'
+import { BookService } from '../book.service'
 
 @Component({
   standalone: true,
@@ -18,6 +19,7 @@ export class BookDialogComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   bookFormGroup!: FormGroup<BookFormGroup>;
+  private bookService = inject(BookService);
 
   ngOnInit() {
     console.log(this.data)
@@ -30,9 +32,9 @@ export class BookDialogComponent implements OnInit {
     });
   }
 
-
   onSubmit() {
-    console.log('onSubmit')
+    this.dialogRef.close();
+    this.bookService.addBook$.next(this.bookFormGroup.value as BookFormGroupValue);
   }
 
   onCancel() {

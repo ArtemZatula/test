@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { map, merge, of, scan, shareReplay, Subject } from 'rxjs'
 
-import { Book } from './book.model'
+import { Book, BookFormGroupValue } from './book.model'
 import { INITIAL_BOOKS } from './init-books'
 
 
@@ -9,8 +9,11 @@ import { INITIAL_BOOKS } from './init-books'
 export class BookService {
   private initBooksHandler = (initBooks: Book[]) => () => initBooks;
 
-  private addBookHandler = (book: Book) =>
-      (books: Book[]) => [...books, book];
+  private addBookHandler = (book: BookFormGroupValue) =>
+      (books: Book[]) => [
+        ...books,
+        { id: `${books.length++}`, ...book }
+      ];
 
   private updateBookHandler = (updatedBook: Book) =>
     (books: Book[]) => books.map((book) =>
@@ -20,7 +23,7 @@ export class BookService {
   private deleteBookHandler = (id: string) =>
     (books: Book[]) => books.filter((book) => book.id !== id);
 
-  readonly addBook$ = new Subject<Book>();
+  readonly addBook$ = new Subject<BookFormGroupValue>();
   readonly updateBook$ = new Subject<Book>();
   readonly deleteBook$ = new Subject<string>();
 

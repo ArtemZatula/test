@@ -6,6 +6,8 @@ export const routes: Routes = [
   {
     path: 'books',
     loadComponent: () => import('./features/books/book-list/book-list.component'),
+    loadChildren: () => import('./features/books/book.routes')
+      .then(r => r.BOOK_ROUTES)
   },
   {
     path: '',
