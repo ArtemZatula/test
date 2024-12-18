@@ -22,8 +22,6 @@ export class BookDialogComponent implements OnInit {
   private bookService = inject(BookService);
 
   ngOnInit() {
-    console.log(this.data)
-
     this.bookFormGroup = this.fb.group<BookFormGroup>({
       title: this.fb.control<string>(this.data?.title || '', { nonNullable: true }),
       author: this.fb.control<string>(this.data?.author || '', { nonNullable: true }),
@@ -34,7 +32,12 @@ export class BookDialogComponent implements OnInit {
 
   onSubmit() {
     this.dialogRef.close();
-    this.bookService.addBook$.next(this.bookFormGroup.value as BookFormGroupValue);
+    const { id } = this.data;
+    if (id) {
+      this.bookService.updateBook$.next({...this.bookFormGroup.value  as BookFormGroupValue, id});
+    } else {
+      this.bookService.addBook$.next(this.bookFormGroup.value as BookFormGroupValue);
+    }
   }
 
   onCancel() {

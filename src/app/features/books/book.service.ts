@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { map, merge, of, scan, shareReplay, Subject } from 'rxjs'
+import { map, merge, of, scan, shareReplay, Subject } from 'rxjs';
 
 import { Book, BookFormGroupValue } from './book.model'
 import { INITIAL_BOOKS } from './init-books'
@@ -10,10 +10,7 @@ export class BookService {
   private initBooksHandler = (initBooks: Book[]) => () => initBooks;
 
   private addBookHandler = (book: BookFormGroupValue) =>
-      (books: Book[]) => [
-        ...books,
-        { id: `${books.length++}`, ...book }
-      ];
+      (books: Book[]) => [ ...books, { id: crypto.randomUUID(), ...book } ];
 
   private updateBookHandler = (updatedBook: Book) =>
     (books: Book[]) => books.map((book) =>

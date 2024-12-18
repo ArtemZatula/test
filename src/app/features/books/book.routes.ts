@@ -1,5 +1,6 @@
 import { Routes } from "@angular/router"
 
+import { bookResolver } from "./book.resolver"
 import BookListComponent from "./book-list/book-list.component"
 
 export const BOOK_ROUTES: Routes = [
@@ -9,6 +10,7 @@ export const BOOK_ROUTES: Routes = [
   }, 
   {
     path: 'edit/:id',
-    component: BookListComponent
+    component: BookListComponent,
+    resolve: { book: bookResolver }
   }
 ]; 
