@@ -9,7 +9,7 @@ export const BOOK_ROUTES: Routes = [
     component: BookListComponent
   }, 
   {
-    path: 'edit/:id',
+    path: 'details/:id',
     component: BookListComponent,
     resolve: { book: bookResolver }
   }

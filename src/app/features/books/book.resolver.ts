@@ -3,7 +3,7 @@ import { MatSnackBar } from "@angular/material/snack-bar"
 import { ActivatedRouteSnapshot, ResolveFn, Router } from "@angular/router"
 import { map, of, tap, withLatestFrom } from "rxjs"
 
-import { Book } from "./book.model"
+import { Book, Books } from "./book.model"
 import { BookService } from "./book.service"
 
 export const bookResolver: ResolveFn<Book | undefined> = (
@@ -16,7 +16,7 @@ export const bookResolver: ResolveFn<Book | undefined> = (
 
   return of(id).pipe(
     withLatestFrom(bookService.books$),
-    map(([id, books]: [string, Book[]]) => books.find(b => b.id === id)),
+    map(([id, books]: [string, Books]) => books.find(b => b.id === id)),
     tap((book: Book | undefined) => {
       if (!book) {
         snackBar.open(`Book with id = ${id} not found`, 'Redirect to books').afterDismissed()

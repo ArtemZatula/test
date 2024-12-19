@@ -1,8 +1,8 @@
 import { InjectionToken } from "@angular/core"
 
-import { Book } from "./book.model"
+import { Books } from "./book.model"
 
-export const initialBooks: Book[] = [
+export const initialBooks: Books = [
   {
     id: 'e737c354-413b-4b37-862f-cbe97a2ec747',
     title: 'To Kill a Mockingbird',
@@ -40,4 +40,4 @@ export const initialBooks: Book[] = [
   },
 ];
 
-export const INITIAL_BOOKS = new InjectionToken<Book[]>('InitialBooks');
+export const INITIAL_BOOKS = new InjectionToken<Books>('InitialBooks');
