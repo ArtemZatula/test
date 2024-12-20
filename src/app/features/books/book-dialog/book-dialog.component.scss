@@ -1,4 +1,23 @@
 .form-container {
-  display: flex;
-  flex-flow: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+
+  .cover {
+    grid-row: span 3;
+    height: 100%;
+
+    img {
+      max-width: 100%;
+    }
+  }
+
+  .title-input,
+  .author-input,
+  .year-input, 
+  .description-input {
+    grid-column: span 2;
+  }
+
 }

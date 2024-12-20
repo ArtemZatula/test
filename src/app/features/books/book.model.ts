@@ -5,7 +5,8 @@ export interface Book {
   title: string;
   author: string;
   year: number;
-  description: string;
+  description: string | null;
+  coverImage?: File | null;
 }
 
 export type Books = Book[];
@@ -16,5 +17,6 @@ export interface BookFormGroup {
   title: FormControl<string>;
   author: FormControl<string>;
   year: FormControl<number>;
-  description: FormControl<string>;
+  description: FormControl<string | null>;
+  coverImage: FormControl<File | null>;
 }

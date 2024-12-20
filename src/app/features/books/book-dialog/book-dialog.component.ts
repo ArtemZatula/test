@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { MatButtonModule } from '@angular/material/button'
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog'
@@ -14,13 +14,14 @@ import { BookService } from '../book.service'
   imports: [ReactiveFormsModule, FormsModule, MatDialogModule, MatFormField, MatLabel, MatInputModule, MatButtonModule, MatIconModule],
   templateUrl: './book-dialog.component.html',
   styleUrl: './book-dialog.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookDialogComponent implements OnInit {
+  @ViewChild('fakeFileInput', { static: false }) fakeFileInput!: ElementRef<HTMLInputElement>;
   readonly dialogRef = inject(MatDialogRef<BookDialogComponent>);
   readonly data = inject<Book>(MAT_DIALOG_DATA);
   private fb = inject(FormBuilder);
   title = 'Add new book';
+  imagePreview: string | null = null;
 
   bookFormGroup!: FormGroup<BookFormGroup>;
   private bookService = inject(BookService);
@@ -40,18 +41,50 @@ export class BookDialogComponent implements OnInit {
       year: this.fb.control<number>(this.data?.year || 2024, {
         validators: [Validators.required], nonNullable: true
       }),
-      description: this.fb.control<string>(this.data?.description || '', {
+      description: this.fb.control<string | null>(this.data?.description || '', {
         nonNullable: true
       }),
+      coverImage: this.fb.control<File | null>(this.data?.coverImage || null),
     });
+
+    const file = this.data.coverImage;
+    if (file) {
+      this.readFile(file)
+    }
+
+    if (this.fakeFileInput && file) {
+      this.fakeFileInput.nativeElement.value = file?.name || '';
+    }
   }
 
-  onSubmit() {
+  onSubmit(): void {
     const { id } = this.data;
     if (id) {
       this.bookService.updateBook({...this.bookFormGroup.value as BookFormGroupValue, id});
     } else {
       this.bookService.addBook(this.bookFormGroup.value as BookFormGroupValue);
+    }
+  }
+
+  private readFile(file: File): void {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  getFileOnLoad(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+
+    if (this.fakeFileInput) {
+      this.fakeFileInput.nativeElement.value = file?.name || '';
+    }
+    
+    if (file) {
+      this.bookFormGroup.patchValue({ coverImage: file });
+      this.bookFormGroup.get('coverImage')?.markAsDirty();
+      this.readFile(file);
     }
   }
 }

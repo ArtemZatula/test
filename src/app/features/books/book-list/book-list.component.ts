@@ -80,7 +80,7 @@ export default class BookListComponent {
     ).pipe(
       switchMap((book: Book | null | undefined) =>
         this.dialog.open(BookDialogComponent, {
-          data: {...book}, width: '500px'}).afterClosed()
+          data: {...book}, width: '700px'}).afterClosed()
       ),
     ).subscribe(() =>
       this.router.navigate(['../'], { relativeTo: this.route })
