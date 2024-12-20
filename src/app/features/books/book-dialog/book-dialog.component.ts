@@ -1,11 +1,13 @@
 import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { MatButtonModule } from '@angular/material/button'
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog'
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog'
 import { MatFormField, MatLabel } from '@angular/material/form-field'
 import { MatIconModule } from '@angular/material/icon'
 import { MatInputModule } from '@angular/material/input';
+import { filter, take } from 'rxjs'
 
+import { DeleteDialogComponent } from '../../../common/components/delete-dialog/delete-dialog.component'
 import { Book, BookFormGroup, BookFormGroupValue } from '../book.model'
 import { BookService } from '../book.service'
 
@@ -16,9 +18,11 @@ import { BookService } from '../book.service'
   styleUrl: './book-dialog.component.scss',
 })
 export class BookDialogComponent implements OnInit {
-  @ViewChild('fakeFileInput', { static: false }) fakeFileInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('fakeFileInput', { static: false })
+  fakeFileInput!: ElementRef<HTMLInputElement>;
   readonly dialogRef = inject(MatDialogRef<BookDialogComponent>);
   readonly data = inject<Book>(MAT_DIALOG_DATA);
+  private deleteDialogRef = inject(MatDialog);
   private fb = inject(FormBuilder);
   title = 'Add new book';
   imagePreview: string | null = null;
@@ -86,5 +90,17 @@ export class BookDialogComponent implements OnInit {
       this.bookFormGroup.get('coverImage')?.markAsDirty();
       this.readFile(file);
     }
+  }
+
+  deleteBook(): void {
+    this.deleteDialogRef.open(DeleteDialogComponent, {
+      data: { title: this.data.title }, width: '500px', height: '250px'}
+    ).afterClosed().pipe(
+      take(1),
+      filter((isDelete: boolean | undefined) => !!isDelete),
+    ).subscribe(() => {
+      this.dialogRef.close();
+      setTimeout(() => this.bookService.deleteBook(this.data.id))
+    }) 
   }
 }
