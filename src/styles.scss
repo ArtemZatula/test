@@ -23,10 +23,6 @@ $main-theme: mat.m2-define-light-theme((
 
 @include mat.all-component-themes($main-theme);
 
-html,
-body {
-  height: 100%;
-}
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
@@ -35,6 +31,8 @@ body {
 :root {
   --mat-table-header-headline-size: 20px;
   --mat-table-row-item-label-text-size: 20px;
+  --mat-table-row-item-container-height: 65px;
+  --mat-table-row-item-container-color:rgba(0, 0, 0, 0.05);
 
   .mat-mdc-dialog-title {
     display: flex;
