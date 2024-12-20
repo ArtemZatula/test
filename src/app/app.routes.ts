@@ -1,12 +1,21 @@
 import { Routes } from '@angular/router'
 
+import PageNotFoundPage from './pages/page-not-found/page-not-found.page'
+
 export const routes: Routes = [
   {
-    path: '',
-    loadComponent: () => import('./pages/home/home.page'),
+    path: 'books',
+    loadComponent: () => import('./features/books/book-list/book-list.component'),
+    loadChildren: () => import('./features/books/book.routes')
+      .then(r => r.BOOK_ROUTES)
   },
   {
-    path: 'other',
-    loadComponent: () => import('./pages/other/other.page'),
+    path: '',
+    redirectTo: '/books',
+    pathMatch: 'full',
   },
+  {
+    path: '**',
+    component: PageNotFoundPage
+  }, 
 ]

@@ -1,0 +1,28 @@
+.container {
+  margin: 40px;
+
+  .header {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .search-bar {
+    width: 300px;
+  }
+
+  .add-book {
+    height: 50px;
+  }
+
+  .mat-mdc-row .mat-mdc-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+  }
+  
+  .mat-mdc-row:hover .mat-mdc-cell {
+    background: var(--mat-table-row-item-container-color);
+  }
+}
+

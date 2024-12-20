@@ -3,6 +3,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideRouter, withComponentInputBinding, withRouterConfig } from '@angular/router'
 
 import { routes } from './app.routes'
+import { INITIAL_BOOKS, initialBooks } from './features/books/init-books'
 import { provideMaterialConfig } from './material.provider'
 
 export const appConfig: ApplicationConfig = {
@@ -10,6 +11,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideAnimationsAsync(),
     provideMaterialConfig(),
+    { provide: INITIAL_BOOKS, useValue: initialBooks },
 
     provideRouter(
       routes,
